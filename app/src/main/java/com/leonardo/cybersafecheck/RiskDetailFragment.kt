@@ -1,30 +1,31 @@
 package com.leonardo.cybersafecheck
 
-import android.adservices.adid.AdId
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import java.util.UUID
+import androidx.lifecycle.lifecycleScope
+import com.leonardo.cybersafecheck.CyberSafeDatabase
+import kotlinx.coroutines.launch
 
-private const val ARG_RISK_ID = "risk_id"
-class RiskDetailFragment: Fragment() {
+private const val ARG_ITEM_ID = "item_id"
 
-    private var riskItem: RiskItem? = null
+class RiskDetailFragment : Fragment() {
 
+    private var itemId: String? = null
+    private lateinit var repository: RiskRepository
     private lateinit var categoryTextView: TextView
     private lateinit var questionTextView: TextView
     private lateinit var explanationTextView: TextView
 
-    override fun onCreate(savedInstanceState: Bundle?){
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val riskId = arguments?.getSerializable(ARG_RISK_ID) as? UUID
+        itemId = arguments?.getString(ARG_ITEM_ID)
 
-        if(riskId != null){
-            riskItem = RiskLab.get().getRiskItem(riskId)
-        }
+        val db = CyberSafeDatabase.getDatabase(requireContext())
+        repository = RiskRepository(db.riskDao(), db.assessmentDao())
     }
 
     override fun onCreateView(
@@ -38,24 +39,25 @@ class RiskDetailFragment: Fragment() {
         questionTextView = view.findViewById(R.id.detail_question_text)
         explanationTextView = view.findViewById(R.id.detail_explanation_text)
 
-        riskItem?.let { item ->
-            categoryTextView.text = "CATEGORY: ${item.category.name}"
-            questionTextView.text = item.questionText
-            explanationTextView.text = item.explanation
+        itemId?.let { id ->
+            lifecycleScope.launch {
+                val entity = repository.getById(id)
 
+                entity?.let { item ->
+                    categoryTextView.text = "CATEGORY: ${item.category}"
+                    questionTextView.text = item.question
+                    explanationTextView.text = item.explanation
+                }
+            }
         }
         return view
     }
 
     companion object {
-        fun newInstance(riskId: UUID): RiskDetailFragment{
-            val args = Bundle().apply{
-                putSerializable(ARG_RISK_ID, riskId)
-            }
+        fun newInstance(itemId: String): RiskDetailFragment {
+            val args = Bundle().apply { putString(ARG_ITEM_ID, itemId) }
 
-            return RiskDetailFragment().apply{
-                arguments = args
-            }
+            return RiskDetailFragment().apply { arguments = args }
         }
     }
 }
