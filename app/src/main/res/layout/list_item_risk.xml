@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
     android:padding="16dp"
-    android:gravity="center_vertical">
+    android:paddingTop="90dp">
 
     <TextView
         android:id="@+id/risk_question_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_width="309dp"
+        android:layout_height="44dp" />
 
     <Switch
         android:id="@+id/risk_yes_switch"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-         />
+        android:layout_height="77dp" />
 </LinearLayout>
