@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/checklistFragment">
+
+    <fragment
+        android:id="@+id/checklistFragment"
+        android:name="com.leonardo.cybersafecheck.ChecklistFragment"
+        android:label="CyberSafeCheck"
+        tools:layout="@layout/fragment_checklist">
+
+        <action
+            android:id="@+id/action_checklistFragment_to_riskDetailFragment"
+            app:destination="@id/riskDetailFragment" />
+
+        <action
+            android:id="@+id/action_checklistFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
+
+        <action
+            android:id="@+id/action_checklistFragment_to_scoreDialogFragment"
+            app:destination="@id/scoreDialogFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/riskDetailFragment"
+        android:name="com.leonardo.cybersafecheck.RiskDetailFragment"
+        android:label="Risk Explanation"
+        tools:layout="@layout/fragment_risk_detail">
+        <argument
+            android:name="itemId"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.leonardo.cybersafecheck.HistoryFragment"
+        android:label="Assessment History"
+        tools:layout="@layout/fragment_history" />
+
+    <dialog
+        android:id="@+id/scoreDialogFragment"
+        android:name="com.leonardo.cybersafecheck.ScoreDialogFragment"
+        android:label="Risk Score" />
+
+</navigation>
